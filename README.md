@@ -15,19 +15,19 @@ Building a Command Line Tool which provides suggestions when developers face err
 **Result**:
 
 ```bash
-cargo run -- ls -l -a
-    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
-     Running `target/debug/code-errors ls -l -a`
-Command: "ls" "-l" "-a"
+cargo run -- ls -la                       
+    Finished dev [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/code-errors ls -la`
+Command: CheckedCommand { command: "ls" "-la" }
+Result: Code: 0, error/output:
 total 32
-drwxr-xr-x@   9 user  staff   288 Dec 24 14:58 .
-drwx------@ 161 user  staff  5152 Dec 24 02:37 ..
-drwxr-xr-x@  13 user  staff   416 Dec 24 02:39 .git
--rw-r--r--@   1 user  staff     8 Dec 24 02:37 .gitignore
--rw-r--r--    1 user  staff   155 Dec 24 02:37 Cargo.lock
--rw-r--r--@   1 user  staff   180 Dec 24 02:37 Cargo.toml
--rw-r--r--    1 user  staff   325 Dec 24 16:26 README.md
-drwxr-xr-x@   4 user  staff   128 Dec 24 16:41 src
-drwxr-xr-x@   5 user  staff   160 Dec 24 02:37 target
-Result: Code: 0, error: Ran successfully
+drwxr-xr-x@   9 prabhavkhera  staff   288 Dec 24 14:58 .
+drwx------@ 161 prabhavkhera  staff  5152 Dec 24 02:37 ..
+drwxr-xr-x@  13 prabhavkhera  staff   416 Dec 24 18:57 .git
+-rw-r--r--@   1 prabhavkhera  staff     8 Dec 24 02:37 .gitignore
+-rw-r--r--    1 prabhavkhera  staff   623 Dec 24 18:39 Cargo.lock
+-rw-r--r--@   1 prabhavkhera  staff   206 Dec 24 18:39 Cargo.toml
+-rw-r--r--    1 prabhavkhera  staff  1102 Dec 24 18:13 README.md
+drwxr-xr-x@   4 prabhavkhera  staff   128 Dec 24 16:41 src
+drwxr-xr-x@   5 prabhavkhera  staff   160 Dec 24 02:37 target
 ```
