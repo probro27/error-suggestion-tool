@@ -3,5 +3,23 @@
 version = 3
 
 [[package]]
+name = "checked_command"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "16fc244716619667ca8e5e25fc2a6242cebb6d4f28c1c2b96d3762bf04ab7015"
+dependencies = [
+ "quick-error",
+]
+
+[[package]]
 name = "code-errors"
 version = "0.1.0"
+dependencies = [
+ "checked_command",
+]
+
+[[package]]
+name = "quick-error"
+version = "1.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a1d01941d82fa2ab50be1e79e6714289dd7cde78eba4c074bc5a4374f650dfe0"
