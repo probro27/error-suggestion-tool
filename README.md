@@ -1,58 +1,54 @@
-# Error Suggestion Tool
+# code-errrors
 
 Building a Command Line Tool which provides suggestions when developers face errors while coding!
 
 ## How it works
 
-- Give a command to run `code-errors npm run dev`.
+- Give a command to run `code-errors gcc hello.c`.
 - It will run the command given and the error we get, should be parsed and sent to OPEN AI.
 - Print the suggestion given by OPEN AI.
 
-## Basic Usage Built
+## Steps to set it up
 
-**Input**: `cargo run --ls -l -a`
+- Get an OPENAI API key from <https://openai.com/api/> after signing up.
+- Create an environment variable by the name `OPENAI_SK`. An example of setting this up in MacOS or Linux is placing `export OPENAI_SK="<your_api_key>"` in `~/.bash_profile` and running `source ~/.bash_profile`.
+- Now, run your code with a command `code-errors <command>`.
 
-**Result**:
+## Usage - Example
 
-```bash
-cargo run -- ls -la                       
-    Finished dev [unoptimized + debuginfo] target(s) in 0.02s
-     Running `target/debug/code-errors ls -la`
-Command: CheckedCommand { command: "ls" "-la" }
-Result: Code: 0, error/output:
-total 32
-drwxr-xr-x@   9 prabhavkhera  staff   288 Dec 24 14:58 .
-drwx------@ 161 prabhavkhera  staff  5152 Dec 24 02:37 ..
-drwxr-xr-x@  13 prabhavkhera  staff   416 Dec 24 18:57 .git
--rw-r--r--@   1 prabhavkhera  staff     8 Dec 24 02:37 .gitignore
--rw-r--r--    1 prabhavkhera  staff   623 Dec 24 18:39 Cargo.lock
--rw-r--r--@   1 prabhavkhera  staff   206 Dec 24 18:39 Cargo.toml
--rw-r--r--    1 prabhavkhera  staff  1102 Dec 24 18:13 README.md
-drwxr-xr-x@   4 prabhavkhera  staff   128 Dec 24 16:41 src
-drwxr-xr-x@   5 prabhavkhera  staff   160 Dec 24 02:37 target
+Write a `hello.c` file with the code (bonus if you can find the obvious error)
+
+```c
+#include <stdio.h>
+
+int main() {
+    print("Hello world!");
+    return 0;
+}
 ```
 
-In case of errors a call to OPEN AI is made which gives a suggestion to the error provided:
+This looks like a simple hello world program. Let's compile it using our favourite complier `gcc`.
+
+**Run:** `code-errors gcc hello.c`
+
+**Result:**
 
 ```bash
-cargo run -- cp
-    Finished dev [unoptimized + debuginfo] target(s) in 2.81s
-     Running `target/debug/code-errors cp`
-Result: Code: 64, error/output:
-usage: cp [-R [-H | -L | -P]] [-fi | -n] [-aclpsvXx] source_file target_file
-       cp [-R [-H | -L | -P]] [-fi | -n] [-aclpsvXx] source_file ... target_directory
+Result: Code: 1, error/output:
+hello.c:4:5: error: implicit declaration of function 'print' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+    print("Hello world!, %1f");
+    ^
+hello.c:4:5: note: did you mean 'printf'?
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h:170:6: note: 'printf' declared here
+int      printf(const char * __restrict, ...) __printflike(1, 2);
+         ^
+1 error generated.
 Suggestion is:
  
-This error indicates that the user has entered an incorrect command while using the cp command on the linux command line. The user is likely trying to copy one or more files from one location to another. 
+Suggestion:
+The error message is telling that the implicit function 'print' is being used in line 4 - it should either be changed to 'printf' or the library containing the definition of 'print' should be included. It is also suggesting to include stdio.h header file which contains the definition of printf() function.
 
-In order to resolve this error, the user should ensure that their command is in the proper form. The syntax for the cp command is provided in the error message, which reads as follows:
-
-cp [-R [-H | -L | -P]] [-fi | -n] [-aclpsvXx] source_file target_file
-cp [-R [-H | -L | -P]] [-fi | -n] [-aclpsvXx] source_file ... target_directory
-
-For more information on the cp command, users can view the Linux manual page here: http://man7.org/linux/man-pages/man1/cp.1.html
-
-Additionally, users can find tutorials and examples on the cp command here: https://www.geeksforgeeks.org/copy-command-linux-examples/
+Links:
+1. Implicit function declaration - https://en.cppreference.com/w/c/language/implicit_declaration
+2. printf() - https://en.cppreference.com/w/c/io/printf
 ```
-
-Right now, this is being made into a command line tool to download using `brew` or `apt-get`.
