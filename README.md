@@ -46,7 +46,10 @@ int      printf(const char * __restrict, ...) __printflike(1, 2);
 Suggestion is:
  
 Suggestion:
-The error message is telling that the implicit function 'print' is being used in line 4 - it should either be changed to 'printf' or the library containing the definition of 'print' should be included. It is also suggesting to include stdio.h header file which contains the definition of printf() function.
+The error message is telling that the implicit function 'print' is being used in line 4 - 
+it should either be changed to 'printf' or the library containing the definition of 'print' should 
+be included. It is also suggesting to include stdio.h header file which contains the definition 
+of printf() function.
 
 Links:
 1. Implicit function declaration - https://en.cppreference.com/w/c/language/implicit_declaration
