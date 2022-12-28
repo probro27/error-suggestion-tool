@@ -62,7 +62,6 @@ pub fn get_command() -> CommandExecute {
 pub fn execute_command(command: CommandExecute) -> CommandResult {
     let mut program = CheckedCommand::new(command.program.clone());
     program.args(command.args);
-    println!("Command: {:?}", program);
     let result = program.output();
     match result {
         Ok(output) => CommandResult { 
