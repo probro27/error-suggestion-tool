@@ -10,6 +10,15 @@ Building a Command Line Tool which provides suggestions when developers face err
 
 ## Steps to set it up
 
+### Installation
+
+Run the following commands for MacOS:
+
+```bash
+brew tap probro27/tap
+brew install code-errors
+```
+
 - Get an OPENAI API key from <https://openai.com/api/> after signing up.
 - Create an environment variable by the name `OPENAI_SK`. An example of setting this up in MacOS or Linux is placing `export OPENAI_SK="<your_api_key>"` in `~/.bash_profile` and running `source ~/.bash_profile`.
 - Now, run your code with a command `code-errors <command>`.
