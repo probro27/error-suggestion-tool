@@ -11,8 +11,8 @@ async fn main() {
     print!("Result: Code: {}, error/output:\n{}", result.exit_code, result.error);
     if result.exit_code != 0 {
         let prompt = String::from("Provide suggestion for this error with suitable links:\n") + &result.error;
-        let response = code_errors::openai_results(prompt).await;
-        print!("Solution is:\n {}", response);
+        let response = code_errors::openai_results_fetch(prompt).await;
+        print!("Suggestion is:\n {}\n", response);
     }
     
 }

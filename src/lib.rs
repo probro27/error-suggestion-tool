@@ -1,6 +1,36 @@
 use std::{env::args, process::exit};
 use checked_command::{CheckedCommand, Error};
-use openai_api::{self, api::Engine, api::CompletionArgs};
+use http::{HeaderMap, HeaderValue, header::{AUTHORIZATION, CONTENT_TYPE}};
+use reqwest::Body;
+use serde::Deserialize;
+
+#[allow(dead_code)]
+#[derive(Deserialize)]
+struct Choice {
+    text: String,
+    index: i32,
+    logprobs: Option<String>,
+    finish_reason: String
+}
+
+#[allow(dead_code)]
+#[derive(Deserialize)]
+struct Usage {
+    prompt_tokens: i32,
+    completion_tokens: i32,
+    total_tokens: i32
+}
+
+#[allow(dead_code)]
+#[derive(Deserialize)]
+struct OpenAIResponse {
+    id: String,
+    object: String,
+    created: i32,
+    model: String,
+    choices: Vec<Choice>,
+    usage: Usage
+}
 
 #[derive(Debug, Clone)]
 pub struct CommandExecute {
@@ -59,17 +89,25 @@ pub fn execute_command(command: CommandExecute) -> CommandResult {
     }
 }
 
-pub async fn openai_results(prompt: String) -> String {
-    println!("Prompt:\n{}", prompt);
+pub async fn openai_results_fetch(prompt: String) -> String {
     let api_token = std::env::var("OPENAI_SK").expect("Open API Not found");
-    let client = openai_api::Client::new(&api_token);
-    let mut new_builder = openai_api::api::CompletionArgs::builder();
-    let builder = new_builder
-        .prompt(prompt.as_str())
-        .engine(Engine::Davinci)
-        .max_tokens(1000)
-        .temperature(0.7);
-    let args: CompletionArgs = builder.build().expect("msg");
-    let completion = client.complete_prompt(args).await.expect("Completion not found");
-    completion.choices[0].text.clone()
+    let url = String::from("https://api.openai.com/v1/completions");
+    let client = reqwest::Client::new();
+    let mut headers = HeaderMap::new();
+    headers.insert(CONTENT_TYPE, HeaderValue::from_str("application/json").unwrap());
+    headers.insert(AUTHORIZATION, HeaderValue::from_str(format!("Bearer {}", api_token).as_str()).unwrap());
+    let mut body = json::JsonValue::new_object();
+    body["model"] = "text-davinci-003".into();
+    body["prompt"] = prompt.into();
+    body["max_tokens"] = 1000.into();
+    let body_str = body.dump();
+    let res = client
+                .post(url)
+                .headers(headers)
+                .body(Into::<Body>::into(body_str.clone()))
+                .send()
+                .await
+                .expect("Response not received");
+    let res_json = res.json::<OpenAIResponse>().await.expect("Error deseralizing to json");
+    res_json.choices[0].text.clone()
 }
