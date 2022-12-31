@@ -2,6 +2,14 @@
 name = "code-errors"
 version = "0.1.0"
 edition = "2021"
+authors = ["Prabhav Khera <prabhavkhera@hotmail.com>"]
+description = "Command line tool to find errors in code!"
+homepage = "https://github.com/probro27/error-suggestion-tool"
+repository = "https://github.com/probro27/error-suggestion-tool"
+license = "MIT"
+keywords = ["command-line", "suggestions", "code-analysis"]
+categories = ["command-line-utilities"]
+readme="README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
